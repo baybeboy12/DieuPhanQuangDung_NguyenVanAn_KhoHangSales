@@ -9,13 +9,45 @@ import {
 } from "react-native";
 import * as React from "react";
 import { Image } from "react-native";
-
 import Icon from "react-native-vector-icons/FontAwesome";
-
 import { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-export default function SignIn({}) {
+import SignUp from "./SignUp";
+
+export default function SignIn({navigation}) {
+  var [data,setData] = useState([]);  
+  const [username,setUsername] = useState('');
+  const [password,setPassword] = useState('');
+  const [signInData, setSignInData] = useState([]);
+  var route = useRoute();
+  useEffect(()=>{
+    fetch('https://6540984045bedb25bfc22306.mockapi.io/account')
+    .then((response) => response.json())
+    .then((json) => {
+      data = json;
+      setData(json);
+    });
+  },[])
+
+   useEffect(() => {
+        if (route.params?.username && route.params?.password) {
+          setData([...data, route.params.username],[...data, route.params.password]);
+        }
+      }, [route.params?.username],[route.params?.password]);
+  
+  const handelSignIn = ()=>{
+    const user = data.find(
+      (user) => user.username === username && user.password === password);
+      if(user){
+          console.log(user)
+            navigation.navigate("Home");
+      }else{
+        alert("Your email is not exist")
+      }
+  }
+  console.log(data);
+
   return (
     <View style={styles.container}>
         <View style={styles.headerSignIn}>
@@ -25,27 +57,41 @@ export default function SignIn({}) {
         </View>
         <View style={styles.inputText}>
             <View style={styles.textLogin}>
-              <TextInput style={styles.textEmail} placeholder="Email"></TextInput>
+              <TextInput style={styles.textEmail} placeholder="UserName"
+                onChangeText={(e) => setUsername(e)}
+              ></TextInput>
             </View>
             <View style={styles.textPass}>
-              <TextInput style={styles.textPassWord} placeholder="Password"></TextInput>
-              <Icon name="eye" style={styles.setIcon1} size={30} color="black" />
+              <TextInput style={styles.textPassWord} placeholder="Password"
+                secureTextEntry={true}
+                onChangeText={(e) => setPassword(e)}
+              ></TextInput>
+                  <Icon name="eye" style={styles.setIcon1} size={30} color="black" />
             </View>
             <View style={styles.viewButton}>
               <Pressable style={styles.pressSignIn} 
-                // onPress={}
+                onPress={()=>handelSignIn()}
               >
                     <Text style={styles.textSign}>SIGN IN</Text>
                 </Pressable>
             </View>
         </View>
         <View style={styles.viewUp}>
-           <Text style={styles.tk}>Create your Account -></Text>
+           <Text style={styles.tk}>Create your Account </Text>
            <Pressable
-            // onPress={}
-            >
-              <Text style={styles.textSignUp}>Sign Up</Text>
-            </Pressable>
+               style={{
+               width: 100,
+               height: 50,
+               borderWidth: 3,
+               borderColor: "grey",
+               alignItems: "center",
+               justifyContent: "center",
+               borderRadius: 20,        
+          }}
+          onPress={() => navigation.navigate("SignUp")}
+        >
+          <Text style={styles.textSignUp}>Sign Up</Text>
+        </Pressable>
         </View>
         
     </View>
@@ -146,7 +192,6 @@ const styles = StyleSheet.create({
     width:"100%",
     height:50,
     alignItems:"center",
-    // backgroundColor:"red",
     flexDirection:"row",
     alignContent:"center"
   },
