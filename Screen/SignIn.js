@@ -57,12 +57,12 @@ export default function SignIn({navigation}) {
         </View>
         <View style={styles.inputText}>
             <View style={styles.textLogin}>
-              <TextInput style={styles.textEmail} placeholder="UserName"
+              <TextInput style={styles.textEmail} placeholder="Enter your UserName"
                 onChangeText={(e) => setUsername(e)}
               ></TextInput>
             </View>
             <View style={styles.textPass}>
-              <TextInput style={styles.textPassWord} placeholder="Password"
+              <TextInput style={styles.textPassWord} placeholder="Enter your Password"
                 secureTextEntry={true}
                 onChangeText={(e) => setPassword(e)}
               ></TextInput>
@@ -89,6 +89,7 @@ export default function SignIn({navigation}) {
                borderRadius: 20,        
           }}
           onPress={() => navigation.navigate("SignUp")}
+          
         >
           <Text style={styles.textSignUp}>Sign Up</Text>
         </Pressable>
