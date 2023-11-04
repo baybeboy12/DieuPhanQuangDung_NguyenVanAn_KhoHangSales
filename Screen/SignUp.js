@@ -60,13 +60,13 @@ export default function SignUp({navigation}) {
         </View>
         <View style={styles.inputText}>
             <View style={styles.textLogin}>
-              <TextInput style={styles.textEmail} placeholder="UserName"
+              <TextInput style={styles.textEmail} placeholder="Create your UserName"
                 value={username}
                 onChangeText={(text) => setUserName(text)}
               ></TextInput>
             </View>
             <View style={styles.textPass}>
-              <TextInput style={styles.textPassWord} placeholder="Password"
+              <TextInput style={styles.textPassWord} placeholder="Create your Password"
               secureTextEntry={true}
               value={password}
               onChangeText={(text) => setPassword(text)}
@@ -75,6 +75,7 @@ export default function SignUp({navigation}) {
             <View style={styles.viewButton}>
               <Pressable style={styles.pressSignIn} 
                 onPress={()=>handleSignUp()}
+                
               >
                     <Text style={styles.textSign}>SIGN UP</Text>
                 </Pressable>
@@ -83,6 +84,7 @@ export default function SignUp({navigation}) {
         <View style={styles.viewUp}>
            <Text style={styles.tk}>Sign in your Account </Text>
            <Pressable
+                
                style={{
                width: 100,
                height: 50,
@@ -92,9 +94,11 @@ export default function SignUp({navigation}) {
                justifyContent: "center",
                borderRadius: 20,        
           }}
-          // onPress={navigation.navigate('SignIn')}
+          onPress={() => navigation.navigate("SignIn")}
         >
-          <Text style={styles.textSignUp}>Sign In</Text>
+          <Text style={styles.textSignUp}
+            
+          >Sign In</Text>
         </Pressable>
         </View>
         
