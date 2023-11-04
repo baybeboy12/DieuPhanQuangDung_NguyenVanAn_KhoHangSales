@@ -1,32 +1,21 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  Pressable,
-} from "react-native";
 import * as React from "react";
-
-import Icon from "react-native-vector-icons/FontAwesome";
-import { Image } from "react-native";
 import SignIn from "./Screen/SignIn";
 import SignUp from "./Screen/SignUp";
-// import { useState, useEffect } from "react";
-// import { useRoute } from "@react-navigation/native";
-// import { useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from "./Screen/Home";
+import { NavigationContainer } from '@react-navigation/native';
+
 
 export default function App() {
+  const Stack = createStackNavigator();
   return (
-    // <SignIn/>
-    <SignUp/>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="SignUp" component={SignUp}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
