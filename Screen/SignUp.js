@@ -9,13 +9,48 @@ import {
 } from "react-native";
 import * as React from "react";
 import { Image } from "react-native";
-
 import Icon from "react-native-vector-icons/FontAwesome";
-
 import { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-export default function SignUp({}) {
+
+
+export default function SignUp({navigation}) {
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignUp = () => {
+
+    
+
+    fetch("https://6540984045bedb25bfc22306.mockapi.io/account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({username,password}),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        navigation.navigate("SignIn",{username,password});
+        reloadSignInData();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetch("https://6540984045bedb25bfc22306.mockapi.io/account")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data fetched successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+  
   return (
     <View style={styles.container}>
         <View style={styles.headerSignIn}>
@@ -25,36 +60,42 @@ export default function SignUp({}) {
         </View>
         <View style={styles.inputText}>
             <View style={styles.textLogin}>
-              <TextInput style={styles.textEmail} placeholder="Email"></TextInput>
+              <TextInput style={styles.textEmail} placeholder="UserName"
+                value={username}
+                onChangeText={(text) => setUserName(text)}
+              ></TextInput>
             </View>
             <View style={styles.textPass}>
-              <TextInput style={styles.textPassWord} placeholder="Password"></TextInput>
-              <Icon name="eye" style={styles.setIcon1} size={30} color="black" />
-            </View>
-            <View style={styles.textPass}>
-              <TextInput style={styles.textEmail} placeholder="Name"></TextInput>
-            </View>
-            <View style={styles.textPass}>
-              <TextInput style={styles.textEmail} placeholder="Addres"></TextInput>
-            </View>
-            <View style={styles.textPass}>
-              <TextInput style={styles.textEmail} placeholder="Phone"></TextInput>
+              <TextInput style={styles.textPassWord} placeholder="Password"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              ></TextInput>
             </View>
             <View style={styles.viewButton}>
               <Pressable style={styles.pressSignIn} 
-                // onPress={}
+                onPress={()=>handleSignUp()}
               >
                     <Text style={styles.textSign}>SIGN UP</Text>
                 </Pressable>
             </View>
         </View>
         <View style={styles.viewUp}>
-           <Text style={styles.tk}>Sign in your Account -></Text>
+           <Text style={styles.tk}>Sign in your Account </Text>
            <Pressable
-            // onPress={}
-            >
-              <Text style={styles.textSignUp}>Sign In</Text>
-            </Pressable>
+               style={{
+               width: 100,
+               height: 50,
+               borderWidth: 3,
+               borderColor: "grey",
+               alignItems: "center",
+               justifyContent: "center",
+               borderRadius: 20,        
+          }}
+          // onPress={navigation.navigate('SignIn')}
+        >
+          <Text style={styles.textSignUp}>Sign In</Text>
+        </Pressable>
         </View>
         
     </View>
@@ -81,7 +122,7 @@ const styles = StyleSheet.create({
   },
   inputText:{
     width:"100%",
-    height:280,
+    height:150,
     // backgroundColor:"red",
     alignItems:"center"
   },
@@ -93,7 +134,7 @@ const styles = StyleSheet.create({
 
   },
   textEmail:{
-    width:"90%",
+    width:"98%",
     height:24,
     marginTop:6,
     marginLeft:5,
