@@ -6,6 +6,7 @@ import ScreenKeo from "./Screen/ScreenKeo";
 import DetailProduct from "./Screen/DetailProduct";
 import Carts from "./Screen/Carts";
 import SignIn from "./Screen/SignIn";
+import SignUp from "./Screen/SignUp";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
         <Stack.Screen name="ScreenKeo" component={ScreenKeo} />
         <Stack.Screen name="DetailProduct" component={DetailProduct} />
         <Stack.Screen name="Carts" component={Carts} />
+        <Stack.Screen name="SignUp" component={SignUp} />
       </Stack.Navigator>
     </NavigationContainer>
   );
