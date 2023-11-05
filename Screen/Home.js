@@ -59,6 +59,22 @@ export default function Home({ navigation }) {
             outline: "none",
           }}
         />
+        <Pressable
+          onPress={() => navigation.navigate("Carts", { account: account })}
+        >
+          <Image
+            source={require("./image/IconGioHang.png")}
+            style={{ width: 30, height: 30 }}
+          ></Image>
+        </Pressable>
+        <Pressable
+        // onPress={() => navigation.navigate("Carts", { account: account })}
+        >
+          <Image
+            source={require("./image/user.png")}
+            style={{ width: 30, height: 30 }}
+          ></Image>
+        </Pressable>
       </View>
       <View style={styles.imageRow}>
         <Image
