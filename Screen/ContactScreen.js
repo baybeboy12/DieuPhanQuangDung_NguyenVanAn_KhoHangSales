@@ -4,11 +4,12 @@ import {
   Text,
   View,
   Button,
+  Image,
   TextInput,
   Pressable,
 } from "react-native";
 import * as React from "react";
-import { Image } from "react-native";
+
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -21,14 +22,32 @@ export default function Contact (navigation) {
           <View style={[styles.setTilte, styles.backgroundwhite]}>
             <Text style={styles.textTitle}>Contact Us</Text>
           </View>
-          <View style={[styles.setEmail, styles.backgroundGreen]}>
-            <Text style={styles.text}>khohangsales@gmail.com</Text>
+          <View style={[styles.setEmail, styles.backgroundwhite]}>
+            <Image source={require("../image/emailCon.jpg")}
+            style={styles.setImage}
+            ></Image>
+            <View style={styles.text1}>
+              <Text style={styles.text}>Email:</Text>
+              <Text style={styles.text}>khohangsales@gmail.com</Text>
+            </View>
           </View>
-          <View style={[styles.setPhone, styles.backgroundBlue]}>
-            <Text style={styles.text}>19001007</Text>
+          <View style={[styles.setPhone, styles.backgroundwhite]}>
+            <Image source={require("../image/phone-call.jpg")}
+            style={styles.setImage}
+            ></Image>
+            <View style={styles.text1}>
+              <Text style={styles.text}>Phone:</Text>
+              <Text style={styles.text}>19001007</Text>
+            </View>
           </View>
-          <View style={[styles.setFace, styles.backgroundOrange]}>
-            <Text style={styles.text}>facebook.com</Text>
+          <View style={[styles.setFace, styles.backgroundwhite]}>
+            <Image source={require("../image/facebook.jpg")}
+            style={styles.setImage}
+            ></Image>
+            <View style={styles.text1}>
+              <Text style={styles.text}>Link:</Text>
+              <Text style={styles.text}>facebook.com</Text> 
+            </View>
           </View>
         </View>
       );
@@ -55,13 +74,13 @@ export default function Contact (navigation) {
         shadowRadius: 3,
       },
       setEmail: {
-        marginBottom: 20,
+        marginBottom: 10,
         width:"80%",
-        height:60,
+        height:100,
         borderRadius: 10,
-        alignItems:"center",
+        flexDirection:"row",
         elevation: 10, // Độ sâu đổ bóng
-        shadowColor: '#8CC84B', // Màu đổ bóng
+        shadowColor: 'black', // Màu đổ bóng
         shadowOffset: { width: 10, height: 7 }, // Độ chênh lệch (độ dài và độ rộng) của đổ bóng
         shadowOpacity: 0.3, // Độ trong suốt của đổ bóng
         shadowRadius: 3,
@@ -69,11 +88,11 @@ export default function Contact (navigation) {
       setPhone: {
         marginBottom: 20,
         width:"80%",
-        height:60,
+        height:100,
         borderRadius: 10,
-        alignItems:"center",
+        flexDirection:"row",
         elevation: 10, // Độ sâu đổ bóng
-        shadowColor: '#008000', // Màu đổ bóng
+        shadowColor: 'black', // Màu đổ bóng
         shadowOffset: { width: 10, height: 7 }, // Độ chênh lệch (độ dài và độ rộng) của đổ bóng
         shadowOpacity: 0.3, // Độ trong suốt của đổ bóng
         shadowRadius: 3,
@@ -81,11 +100,11 @@ export default function Contact (navigation) {
       setFace: {
         marginBottom: 20,
         width:"80%",
-        height:60,
+        height:100,
         borderRadius: 10,
-        alignItems:"center",
+        flexDirection:"row",
         elevation: 10, // Độ sâu đổ bóng
-        shadowColor: 'red', // Màu đổ bóng
+        shadowColor: 'black', // Màu đổ bóng
         shadowOffset: { width: 10, height: 7 }, // Độ chênh lệch (độ dài và độ rộng) của đổ bóng
         shadowOpacity: 0.3, // Độ trong suốt của đổ bóng
         shadowRadius: 3,
@@ -94,13 +113,15 @@ export default function Contact (navigation) {
         fontSize: 18,
         marginTop:18,
         fontWeight:700,
-        color: 'white', // Màu chữ là màu trắng
+        marginLeft:5,
+        color: 'black', // Màu chữ là màu trắng
       },
       textTitle:{
         fontSize: 18,
         marginTop:18,
         fontWeight:700,
         color: 'black',
+        marginLeft:5
       },
       backgroundGreen: {
         backgroundColor: 'green',
@@ -114,4 +135,13 @@ export default function Contact (navigation) {
       backgroundwhite: {
         backgroundColor: 'white',
       },
+      setImage:{
+        width:30,
+        height:30,
+        marginLeft:5,
+        marginTop:15
+      },
+      text1:{
+        flexDirection:"column"
+      }
     });
