@@ -1,25 +1,31 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Pressable, Image } from "react-native";
-// import Home from "./Screen/Home";
-// import ScreenBot from "./Screen/ScreenBot";
-// import ScreenKeo from "./Screen/ScreenKeo";
-// import DetailProduct from "./Screen/DetailProduct";
-// import Carts from "./Screen/Carts";
-// import SignIn from "./Screen/SignIn";
-// import SignUp from "./Screen/SignUp";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
-export default function User() {
+import { useState, useEffect } from "react";
+import { useRoute } from "@react-navigation/native";
+
+export default function User({ navigation }) {
+  var route = useRoute();
+  var [account, setAccount] = useState(route.params.account);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>User Profile</Text>
+        <Image
+          source={require("./image/IconAccount.png")}
+          style={styles.avatar}
+        />
+        <Text style={styles.headerText}>Hi {account.fullName}</Text>
       </View>
 
       <View style={styles.section}>
         <View style={styles.sectionContent}>
-          <Pressable style={styles.pressable}>
-            <Text style={styles.text}>User Details</Text>
+          <Pressable
+            style={styles.pressable}
+            onPress={() =>
+              navigation.navigate("UserDetail", { account: account })
+            }
+          >
+            <Text style={styles.text}>Thông tin chi tiết</Text>
             <Image
               source={require("./image/information.png")}
               style={styles.icon}
@@ -30,8 +36,13 @@ export default function User() {
 
       <View style={styles.section}>
         <View style={styles.sectionContent}>
-          <Pressable style={styles.pressable}>
-            <Text style={styles.text}>Terms of Service</Text>
+          <Pressable
+            style={styles.pressable}
+            onPress={() =>
+              navigation.navigate("TermOfService", { account: account })
+            }
+          >
+            <Text style={styles.text}>Điều khoản và dich vụ</Text>
             <Image source={require("./image/terms.png")} style={styles.icon} />
           </Pressable>
         </View>
@@ -39,8 +50,13 @@ export default function User() {
 
       <View style={styles.section}>
         <View style={styles.sectionContent}>
-          <Pressable style={styles.pressable}>
-            <Text style={styles.text}>Contact Us</Text>
+          <Pressable
+            style={styles.pressable}
+            // onPress={() =>
+            //   navigation.navigate("UserDetail", { account: account })
+            // }
+          >
+            <Text style={styles.text}>Liên hệ chúng tôi</Text>
             <Image
               source={require("./image/contact.png")}
               style={styles.icon}
@@ -69,11 +85,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: "#0056b3",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   headerText: {
     fontSize: 30,
     fontWeight: "bold",
     color: "#fff",
+  },
+  avatar: {
+    width: 48,
+    height: 48,
+    marginRight: 10,
   },
   section: {
     borderBottomWidth: 1,

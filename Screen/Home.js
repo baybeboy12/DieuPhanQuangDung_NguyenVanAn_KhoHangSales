@@ -45,37 +45,42 @@ export default function Home({ navigation }) {
         style={styles.headerImage}
       />
       <View style={styles.searchContainer}>
-        <Image
-          source={require("./image/IconSearch.png")}
-          style={styles.searchIcon}
-        />
-        <TextInput
-          placeholder="Search"
-          style={{
-            flex: 1,
-            marginLeft: 10,
-            width: "60%",
-            height: 35,
-            outline: "none",
-          }}
-        />
-        <Pressable
-          onPress={() => navigation.navigate("Carts", { account: account })}
-        >
+        <View style={styles.searchAndIcon}>
           <Image
-            source={require("./image/IconGioHang.png")}
-            style={{ width: 30, height: 30 }}
-          ></Image>
-        </Pressable>
-        <Pressable
-        // onPress={() => navigation.navigate("Carts", { account: account })}
-        >
-          <Image
-            source={require("./image/user.png")}
-            style={{ width: 30, height: 30 }}
-          ></Image>
-        </Pressable>
+            source={require("./image/IconSearch.png")}
+            style={styles.searchIcon}
+          />
+          <TextInput
+            placeholder="Search"
+            style={{
+              flex: 1,
+              marginLeft: 10,
+              width: "60%",
+              height: 35,
+              outline: "none",
+            }}
+          />
+        </View>
+        <View style={styles.iconContainer}>
+          <Pressable
+            onPress={() => navigation.navigate("Carts", { account: account })}
+          >
+            <Image
+              source={require("./image/IconGioHang.png")}
+              style={styles.cartIcon}
+            />
+          </Pressable>
+          <Pressable
+            onPress={() => navigation.navigate("Users", { account: account })}
+          >
+            <Image
+              source={require("./image/user.png")}
+              style={styles.userIcon}
+            />
+          </Pressable>
+        </View>
       </View>
+
       <View style={styles.imageRow}>
         <Image
           source={require("./image/banner.webp")}
@@ -144,7 +149,10 @@ export default function Home({ navigation }) {
                   source={{ uri: item.image }}
                   style={styles.productImage}
                 />
-                <Text style={styles.productPrice}>{item.price}</Text>
+                <Text style={styles.productPrice}>
+                  {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+                  VND
+                </Text>
               </Pressable>
             </View>
           )}
@@ -183,7 +191,10 @@ export default function Home({ navigation }) {
                   source={{ uri: item.image }}
                   style={styles.productImage}
                 />
-                <Text style={styles.productPrice}>{item.price}</Text>
+                <Text style={styles.productPrice}>
+                  {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+                  VND
+                </Text>
               </Pressable>
             </View>
           )}
@@ -206,27 +217,42 @@ const styles = StyleSheet.create({
     top: 0,
   },
   searchContainer: {
-    width: "80%",
+    width: "90%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#e8e8e8",
     marginTop: 90,
     borderRadius: 15,
     paddingHorizontal: 10,
     height: 40,
+  },
+  searchAndIcon: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    width: "50%",
+    backgroundColor: "#e8e8e8",
+    borderRadius: 15,
+    paddingHorizontal: 10,
   },
   searchIcon: {
     width: 20,
     height: 20,
     marginLeft: 10,
   },
-  // searchInput: {
-  //   flex: 1,
-  //   marginLeft: 10,
-  //   width: "60",
-  //   height: 35,
-  //   outline: "none",
-  // },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  cartIcon: {
+    width: 30,
+    height: 30,
+    marginLeft: 5,
+  },
+  userIcon: {
+    width: 30,
+    height: 30,
+    marginLeft: 5,
+  },
   imageRow: {
     width: "100%",
     flexDirection: "row",
@@ -324,6 +350,7 @@ const styles = StyleSheet.create({
   },
   productPrice: {
     marginTop: 10,
-    color: "blue",
+    color: "red",
+    fontWeight: "bold",
   },
 });

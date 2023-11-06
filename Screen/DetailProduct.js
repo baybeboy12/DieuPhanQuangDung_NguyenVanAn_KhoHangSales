@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import React from "react";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
 import { useRoute } from "@react-navigation/native";
 
@@ -8,6 +8,7 @@ export default function DetailProduct({ navigation }) {
   var route = useRoute();
   var [account, setAccount] = useState(route.params.account);
   var [carts, setCarts] = useState([]);
+
   const increaseQuantity = () => {
     setSoLuong(soLuong + 1);
   };
@@ -17,30 +18,27 @@ export default function DetailProduct({ navigation }) {
       setSoLuong(soLuong - 1);
     }
   };
+
   var { productName, productImage, productPrice } = route.params;
 
   const addToCart = () => {
     const newItem = {
-      name: productName, // Sử dụng thuộc tính từ product
+      name: productName,
       image: productImage,
       price: productPrice,
       soLuong: soLuong,
     };
 
-    // Tìm sản phẩm trong giỏ hàng với cùng tên
     const existingItemIndex = account.carts.findIndex(
       (item) => item.name === newItem.name
     );
 
     if (existingItemIndex !== -1) {
-      // Nếu sản phẩm đã tồn tại, cộng số lượng mới vào số lượng hiện tại
       account.carts[existingItemIndex].soLuong += newItem.soLuong;
     } else {
-      // Nếu sản phẩm chưa tồn tại, thêm mới
       account.carts.push(newItem);
     }
 
-    // Lưu dữ liệu giỏ hàng và người dùng đã được cập nhật
     fetch(`https://6540984045bedb25bfc22306.mockapi.io/account/${account.id}`, {
       method: "PUT",
       headers: {
@@ -53,60 +51,54 @@ export default function DetailProduct({ navigation }) {
         setAccount(updatedUser);
       });
 
-    // Điều hướng người dùng đến màn hình giỏ hàng
     navigation.navigate("Carts", {
       account: account,
     });
   };
 
-  console.log(account);
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Chi tiết sản phẩm </Text>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Chi tiết sản phẩm</Text>
         <Pressable
           onPress={() => navigation.navigate("Carts", { account: account })}
+          style={styles.cartIconContainer}
         >
           <Image
             source={require("./image/IconGioHang.png")}
-            style={{ marginLeft: 100, width: 30, height: 30 }}
-          ></Image>
+            style={styles.cartIcon}
+          />
         </Pressable>
       </View>
-      <View style={styles.imageContainer}>
+      <View style={styles.productImageContainer}>
         <Image source={{ uri: productImage }} style={styles.productImage} />
       </View>
       <View style={styles.productInfo}>
         <Text style={styles.productName}>{productName}</Text>
-        <Text style={styles.productPrice}>{productPrice}</Text>
+        <View style={styles.priceContainer}>
+          <Text style={styles.priceLabel}>Giá: </Text>
+          <Text style={styles.priceValue}>
+            {new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(productPrice)}
+          </Text>
+        </View>
         <Text style={styles.productDescription}>
           Mô tả sản phẩm: Đây là một sản phẩm tốt.
         </Text>
       </View>
       <View style={styles.quantityContainer}>
         <Text style={styles.quantityLabel}>Số lượng:</Text>
-        <Pressable onPress={decreaseQuantity}>
-          <Text style={styles.quantityButton}>-</Text>
+        <Pressable onPress={decreaseQuantity} style={styles.quantityButton}>
+          <Text style={styles.quantityButtonText}>-</Text>
         </Pressable>
         <Text style={styles.quantityText}>{soLuong}</Text>
-        <Pressable onPress={increaseQuantity}>
-          <Text style={styles.quantityButton}>+</Text>
+        <Pressable onPress={increaseQuantity} style={styles.quantityButton}>
+          <Text style={styles.quantityButtonText}>+</Text>
         </Pressable>
       </View>
-      <Pressable
-        style={styles.addToCartButton}
-        onPress={
-          addToCart
-          // () =>
-          // navigation.navigate("Carts", {
-          //   getSoLuong: soLuong,
-          //   getNameProduct: productName,
-          //   getImageProduct: productImage,
-          //   getPriceProduct: productPrice,
-          //   getSelectUserDetailProduct: account,
-          // })
-        }
-      >
+      <Pressable style={styles.addToCartButton} onPress={addToCart}>
         <Text style={styles.addToCartButtonText}>Thêm vào giỏ hàng</Text>
       </Pressable>
     </View>
@@ -119,21 +111,28 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 20,
   },
-  titleContainer: {
-    backgroundColor: "#FFCC33", // Màu cam nhạt
+  header: {
+    backgroundColor: "#FFCC33",
     padding: 10,
     borderRadius: 10,
-    marginBottom: 20,
     flexDirection: "row",
     justifyContent: "center",
   },
-  titleText: {
+  headerText: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-    color: "white", // Màu chữ đen
+    color: "white",
   },
-  imageContainer: {
+  cartIconContainer: {
+    position: "absolute",
+    right: 10,
+  },
+  cartIcon: {
+    width: 30,
+    height: 30,
+  },
+  productImageContainer: {
     alignItems: "center",
   },
   productImage: {
@@ -148,11 +147,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    textAlign: "center",
   },
-  productPrice: {
-    fontSize: 16,
-    color: "blue",
+  priceContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
+  },
+  priceLabel: {
+    fontSize: 16,
+    color: "black",
+  },
+  priceValue: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "red",
   },
   productDescription: {
     fontSize: 14,
@@ -167,8 +176,16 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   quantityButton: {
+    width: 30,
+    height: 30,
+    backgroundColor: "#FFCC33",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 15,
+  },
+  quantityButtonText: {
     fontSize: 24,
-    paddingHorizontal: 10,
+    color: "white",
   },
   quantityText: {
     fontSize: 16,
@@ -178,10 +195,10 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     padding: 10,
     borderRadius: 10,
+    alignItems: "center",
   },
   addToCartButtonText: {
     color: "white",
     fontSize: 18,
-    textAlign: "center",
   },
 });

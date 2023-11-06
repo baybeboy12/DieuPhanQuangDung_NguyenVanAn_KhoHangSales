@@ -9,10 +9,12 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
+
 export default function Carts({ navigation }) {
   var route = useRoute();
   var [account, setAccount] = useState(route.params.account);
   var [total, setTotal] = useState(0);
+
   useEffect(() => {
     if (route.params?.account) {
       setAccount(route.params.account);
@@ -22,13 +24,14 @@ export default function Carts({ navigation }) {
   useEffect(() => {
     calculateTotal();
   }, [account.carts]);
+
   const calculateTotal = () => {
-    // Sử dụng reduce để tính tổng giá trị từ mảng sản phẩm trong giỏ hàng
     const newTotal = account.carts.reduce((acc, item) => {
       return acc + item.price * item.soLuong;
     }, 0);
     setTotal(newTotal);
   };
+
   var handleThanhToan = () => {
     var newAccount = {
       id: account.id,
@@ -51,11 +54,33 @@ export default function Carts({ navigation }) {
         setAccount(newAccount);
       });
 
-    // Điều hướng người dùng đến màn hình giỏ hàng
     navigation.navigate("Home", {
       account: newAccount,
     });
   };
+
+  const handleDeleteItem = (item) => {
+    console.log(item);
+    const updatedCarts = account.carts.filter(
+      (product) => product.name !== item.name
+    );
+
+    fetch(`https://6540984045bedb25bfc22306.mockapi.io/account/${account.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...account, carts: updatedCarts }),
+    })
+      .then((response) => response.json())
+      .then((updatedAccount) => {
+        setAccount(updatedAccount);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi cập nhật giỏ hàng trên API:", error);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -65,87 +90,187 @@ export default function Carts({ navigation }) {
         data={account.carts}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <View style={styles.ViewProduct}>
-            <Image
-              source={{ uri: item.image }}
-              style={{ width: 50, height: 50, marginLeft: 15 }}
-            ></Image>
-            <View style={styles.productText}>
-              <Text>{item.name}</Text>
-              <Text>{item.price}</Text>
-              <Text>{item.soLuong}</Text>
+          <View style={styles.productContainer}>
+            <View style={styles.ViewProduct}>
+              <Image source={{ uri: item.image }} style={styles.productImage} />
+              <View style={styles.productText}>
+                <Text style={styles.productName}>{item.name}</Text>
+                <Text style={styles.productPrice}>
+                  {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+                  VND
+                </Text>
+                <Text style={styles.soLuong}>Số lượng: {item.soLuong}</Text>
+              </View>
+            </View>
+            <View style={styles.deleteButton}>
+              <Pressable onPress={() => handleDeleteItem(item)}>
+                <Image
+                  source={require("./image/IconDeleteProduct.png")}
+                  style={styles.deleteIcon}
+                />
+              </Pressable>
             </View>
           </View>
         )}
       />
 
-      <View style={styles.viewTong}>
-        <Text style={{ marginLeft: 20 }}>Tổng</Text>
-        <Text style={{ marginLeft: 180 }}>{total}</Text>
+      <View style={styles.bottomContainer}>
+        <Pressable
+          style={styles.viewHome}
+          onPress={() => navigation.navigate("Home", { account })}
+        >
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: "black" }}>
+            Home
+          </Text>
+          <Image
+            source={require("./image/IconHome.png")}
+            style={styles.homeIcon}
+          ></Image>
+        </Pressable>
+        <Pressable style={styles.viewThanhToan} onPress={handleThanhToan}>
+          <Text style={styles.thanhToanText}>Thanh toán</Text>
+          <Image
+            source={require("./image/IconThanhToan.png")}
+            style={styles.thanhToanIcon}
+          ></Image>
+        </Pressable>
       </View>
-      <Pressable style={styles.viewThanhToan} onPress={handleThanhToan}>
-        <Text>Thanh toán</Text>
-        <Image
-          source={require("./image/IconThanhToan.png")}
-          style={{ width: 30, height: 30, marginLeft: 30 }}
-        ></Image>
-      </Pressable>
     </View>
   );
 }
-// FFCC99
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#F5F5F5",
     padding: 20,
   },
   titleContainer: {
-    backgroundColor: "#FFCC33", // Màu cam nhạt
+    backgroundColor: "#FFCC33",
     padding: 10,
     borderRadius: 10,
     marginBottom: 20,
-    flexDirection: "row",
-    justifyContent: "center",
+    alignItems: "center",
   },
   titleText: {
     fontSize: 20,
     fontWeight: "bold",
-    textAlign: "center",
-    color: "white", // Màu chữ đen
+    color: "white",
+  },
+  productContainer: {
+    flexDirection: "row",
+    width: "100%",
+    height: 100,
+    borderRadius: 10,
+    borderColor: "#E0E0E0",
+    borderWidth: 1,
+    marginBottom: 15,
+    alignItems: "center",
+    backgroundColor: "white",
   },
   ViewProduct: {
     flexDirection: "row",
-    width: "100%",
-    height: 70,
-    borderRadius: 10,
-    borderColor: "grey",
-    borderWidth: 2,
+    flex: 1,
     alignItems: "center",
   },
   productText: {
-    marginLeft: 20,
+    flex: 1,
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  productName: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  productPrice: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "red",
+  },
+  soLuong: {
+    fontSize: 14,
+  },
+  deleteButton: {
+    width: 30,
+    height: 30,
+    backgroundColor: "#FF5733", // Màu nền của nút Delete
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    top: 10,
+    right: 10,
+    borderRadius: 15, // Để tạo hình tròn
+  },
+  deleteIcon: {
+    width: 15,
+    height: 15,
+  },
+  productImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginRight: 10,
+    marginTop: 10,
+  },
+  bottomContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
   },
   viewTong: {
     flexDirection: "row",
     width: "100%",
     height: 50,
     borderRadius: 10,
-    borderColor: "grey",
-    borderWidth: 2,
+    borderColor: "#E0E0E0",
+    borderWidth: 1,
     alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    marginBottom: 15,
     backgroundColor: "#FF9933",
-    marginTop: 30,
+  },
+  tongLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "white",
+  },
+  totalValue: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "red",
   },
   viewThanhToan: {
-    width: "100%",
-    height: 40,
+    width: "50%",
+    height: 50,
     flexDirection: "row",
-    marginTop: 30,
-    backgroundColor: "#CCFFFF",
-    borderWidth: 2,
+    backgroundColor: "#00C853",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+  },
+  thanhToanText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "white",
+  },
+  thanhToanIcon: {
+    width: 20,
+    height: 20,
+    marginLeft: 10,
+  },
+  viewHome: {
+    width: "50%",
+    height: 50,
+    backgroundColor: "lightgrey",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  homeIcon: {
+    width: 30,
+    height: 30,
+    marginLeft: 5,
   },
 });

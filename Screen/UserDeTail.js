@@ -1,16 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Pressable, Image } from "react-native";
-// import Home from "./Screen/Home";
-// import ScreenBot from "./Screen/ScreenBot";
-// import ScreenKeo from "./Screen/ScreenKeo";
-// import DetailProduct from "./Screen/DetailProduct";
-// import Carts from "./Screen/Carts";
-// import SignIn from "./Screen/SignIn";
-// import SignUp from "./Screen/SignUp";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useState, useEffect } from "react";
+import { useRoute } from "@react-navigation/native";
 
-export default function UserDetail() {
+export default function UserDetail({ navigation }) {
+  var route = useRoute();
+  var [account, setAccount] = useState(route.params.account);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -25,7 +20,7 @@ export default function UserDetail() {
           />
           <View style={styles.labelValue}>
             <Text style={styles.label}>Username:</Text>
-            <Text style={styles.value}></Text>
+            <Text style={styles.value}>{account.username}</Text>
           </View>
         </View>
       </View>
@@ -38,7 +33,7 @@ export default function UserDetail() {
           />
           <View style={styles.labelValue}>
             <Text style={styles.label}>Address:</Text>
-            <Text style={styles.value}></Text>
+            <Text style={styles.value}>{account.address}</Text>
           </View>
         </View>
       </View>
@@ -51,7 +46,7 @@ export default function UserDetail() {
           />
           <View style={styles.labelValue}>
             <Text style={styles.label}>Phone:</Text>
-            <Text style={styles.value}></Text>
+            <Text style={styles.value}>{account.phone}</Text>
           </View>
         </View>
       </View>
@@ -61,7 +56,7 @@ export default function UserDetail() {
           <Image source={require("./image/IconName.png")} style={styles.icon} />
           <View style={styles.labelValue}>
             <Text style={styles.label}>Full Name:</Text>
-            <Text style={styles.value}></Text>
+            <Text style={styles.value}>{account.fullName}</Text>
           </View>
         </View>
       </View>

@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 
-export default function TermOfService() {
+export default function TermOfService({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
