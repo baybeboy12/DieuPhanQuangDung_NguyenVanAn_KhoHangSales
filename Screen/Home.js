@@ -16,8 +16,14 @@ import { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 export default function Home(navigation) {
+
     return (
-            <View>Home</View>
+      <View>
+        <Button
+        title="Go to Contact"
+        onPress={() => navigation.navigate('Contact')}
+      />
+      </View>
     );
   }
   
@@ -26,4 +32,9 @@ export default function Home(navigation) {
       flex: 1,
       backgroundColor: '#fff',
     },
+    contact:{
+      width:"70%",
+      height:30,
+      backgroundColor:"red"
+    }
   });
