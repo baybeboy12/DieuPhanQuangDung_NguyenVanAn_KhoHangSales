@@ -18,6 +18,9 @@ import { useNavigation } from "@react-navigation/native";
 export default function SignUp({navigation}) {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [address,setAddress] = useState("");
+  const [phone,setPhone] = useState("");
+  const [fullName,setFullName] = useState("");
 
   const handleSignUp = () => {
 
@@ -28,7 +31,7 @@ export default function SignUp({navigation}) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({username,password}),
+      body: JSON.stringify({username,password,address,phone,fullName}),
     })
       .then((response) => response.json())
       .then(() => {
@@ -70,6 +73,24 @@ export default function SignUp({navigation}) {
               secureTextEntry={true}
               value={password}
               onChangeText={(text) => setPassword(text)}
+              ></TextInput>
+            </View>
+            <View style={styles.textPass}>
+            <TextInput style={styles.textPassWord} placeholder="Enter your Address"
+              value={address}
+              onChangeText={(text) => setAddress(text)}
+              ></TextInput>
+            </View>
+            <View style={styles.textPass}>
+            <TextInput style={styles.textPassWord} placeholder="Enter your Phone"
+              value={phone}
+              onChangeText={(text) => setPhone(text)}
+              ></TextInput>
+            </View>
+            <View style={styles.textPass}>
+            <TextInput style={styles.textPassWord} placeholder="Enter your Name"
+              value={fullName}
+              onChangeText={(text) => setFullName(text)}
               ></TextInput>
             </View>
             <View style={styles.viewButton}>
@@ -126,7 +147,7 @@ const styles = StyleSheet.create({
   },
   inputText:{
     width:"100%",
-    height:150,
+    height:300,
     // backgroundColor:"red",
     alignItems:"center"
   },
