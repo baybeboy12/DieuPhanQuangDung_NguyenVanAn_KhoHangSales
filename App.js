@@ -10,6 +10,7 @@ import SignUp from "./Screen/SignUp";
 import Users from "./Screen/Users";
 import UserDetail from "./Screen/UserDeTail";
 import TermOfService from "./Screen/TermOfService";
+import ContactScreen from "./Screen/ContactScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
         <Stack.Screen name="Users" component={Users} />
         <Stack.Screen name="UserDetail" component={UserDetail} />
         <Stack.Screen name="TermOfService" component={TermOfService} />
+        <Stack.Screen name="ContactScreen" component={ContactScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -52,9 +52,9 @@ export default function User({ navigation }) {
         <View style={styles.sectionContent}>
           <Pressable
             style={styles.pressable}
-            // onPress={() =>
-            //   navigation.navigate("UserDetail", { account: account })
-            // }
+            onPress={() =>
+              navigation.navigate("ContactScreen", { account: account })
+            }
           >
             <Text style={styles.text}>Liên hệ chúng tôi</Text>
             <Image
