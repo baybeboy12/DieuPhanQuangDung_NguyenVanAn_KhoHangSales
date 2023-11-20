@@ -15,7 +15,7 @@ export default function ScreenBot({ navigation }) {
   var [dataBot, setDataBot] = useState([]);
   var [account, setAccount] = useState(route.params.account);
   var [product, setProduct] = useState(route.params.productBot);
-
+  const [dataUser, setDataUser] = useState(route.params.dataUser);
   useEffect(() => {
     fetch(`https://65434a7d01b5e279de20240f.mockapi.io/product`)
       .then((response) => response.json())
@@ -26,8 +26,8 @@ export default function ScreenBot({ navigation }) {
       });
   }, []);
 
-  console.log(account);
-
+  // console.log(account);
+  // console.log(dataUser);
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -56,6 +56,7 @@ export default function ScreenBot({ navigation }) {
                   productImage: item.image,
                   productPrice: item.price,
                   account: account,
+                  dataUser: dataUser,
                   // Thêm thông tin sản phẩm khác nếu cần
                 })
               }

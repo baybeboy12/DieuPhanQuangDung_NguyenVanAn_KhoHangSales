@@ -13,7 +13,8 @@ import { useRoute } from "@react-navigation/native";
 
 export default function Home({ navigation }) {
   var route = useRoute();
-  const [data, setData] = useState([]);
+  const [dataUser, setDataUser] = useState(route.params.dataUser);
+  const [dataPro, setDataPro] = useState([]);
   const [dataBot, setDataBot] = useState([]);
   const [dataKeo, setDataKeo] = useState([]);
   var [account, setAccount] = useState(route.params.account);
@@ -25,19 +26,25 @@ export default function Home({ navigation }) {
   useEffect(() => {
     setAccount(route.params.account);
   }, [route.params]);
+
+  useEffect(() => {
+    setDataUser(route.params.dataUser);
+  }, [route.params.dataUser]);
+
   useEffect(() => {
     fetch(`https://65434a7d01b5e279de20240f.mockapi.io/product`)
       .then((response) => response.json())
       .then((json) => {
         // Sử dụng setData để cập nhật giá trị của state
-        setData(json);
+        setDataPro(json);
         const filteredDataBot = json.filter((item) => item.type === "type 1");
         setDataBot(filteredDataBot);
         const filteredDataKeo = json.filter((item) => item.type === "type 2");
         setDataKeo(filteredDataKeo);
       });
   }, []);
-  console.log(account);
+  // console.log(account);
+  // console.log(dataUser);
   return (
     <View style={styles.container}>
       <Image
@@ -63,7 +70,12 @@ export default function Home({ navigation }) {
         </View>
         <View style={styles.iconContainer}>
           <Pressable
-            onPress={() => navigation.navigate("Carts", { account: account })}
+            onPress={() =>
+              navigation.navigate("Carts", {
+                account: account,
+                dataUser: dataUser,
+              })
+            }
           >
             <Image
               source={require("./image/IconGioHang.png")}
@@ -71,7 +83,12 @@ export default function Home({ navigation }) {
             />
           </Pressable>
           <Pressable
-            onPress={() => navigation.navigate("Users", { account: account })}
+            onPress={() =>
+              navigation.navigate("Users", {
+                account: account,
+                dataUser: dataUser,
+              })
+            }
           >
             <Image
               source={require("./image/user.png")}
@@ -93,7 +110,10 @@ export default function Home({ navigation }) {
           <Pressable
             style={styles.categoryItem}
             onPress={() =>
-              navigation.navigate("ScreenBot", { account: account })
+              navigation.navigate("ScreenBot", {
+                account: account,
+                dataUser: dataUser,
+              })
             }
           >
             <Image
@@ -105,7 +125,10 @@ export default function Home({ navigation }) {
           <Pressable
             style={styles.categoryItem}
             onPress={() =>
-              navigation.navigate("ScreenKeo", { account: account })
+              navigation.navigate("ScreenKeo", {
+                account: account,
+                dataUser: dataUser,
+              })
             }
           >
             <Image
@@ -122,7 +145,12 @@ export default function Home({ navigation }) {
         <Text style={styles.categoryFrameText}>Danh mục bột hòa tan</Text>
         <Pressable
           style={styles.categoryFrameButton}
-          onPress={() => navigation.navigate("ScreenBot", { account: account })}
+          onPress={() =>
+            navigation.navigate("ScreenBot", {
+              account: account,
+              dataUser: dataUser,
+            })
+          }
         >
           <Text style={styles.categoryFrameButtonText}>Xem thêm</Text>
         </Pressable>
@@ -142,6 +170,7 @@ export default function Home({ navigation }) {
                     productImage: item.image,
                     productPrice: item.price,
                     account: account,
+                    dataUser: dataUser,
                   })
                 }
               >
@@ -164,7 +193,12 @@ export default function Home({ navigation }) {
         <Text style={styles.categoryFrameText}>Danh mục kẹo ngậm họ</Text>
         <Pressable
           style={styles.categoryFrameButton}
-          onPress={() => navigation.navigate("ScreenKeo", { account: account })}
+          onPress={() =>
+            navigation.navigate("ScreenKeo", {
+              account: account,
+              dataUser: dataUser,
+            })
+          }
         >
           <Text style={styles.categoryFrameButtonText}>Xem thêm</Text>
         </Pressable>
@@ -184,6 +218,7 @@ export default function Home({ navigation }) {
                     productImage: item.image,
                     productPrice: item.price,
                     account: account,
+                    dataUser: dataUser,
                   })
                 }
               >

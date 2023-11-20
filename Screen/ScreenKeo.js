@@ -14,7 +14,7 @@ export default function ScreenKeo({ navigation }) {
   var route = useRoute();
   var [dataKeo, setDataKeo] = useState([]);
   var [account, setAccount] = useState(route.params.account);
-
+  const [dataUser, setDataUser] = useState(route.params.dataUser);
   useEffect(() => {
     fetch(`https://65434a7d01b5e279de20240f.mockapi.io/product`)
       .then((response) => response.json())
@@ -25,8 +25,8 @@ export default function ScreenKeo({ navigation }) {
       });
   }, []);
 
-  console.log(account);
-
+  // console.log(account);
+  // console.log(dataUser);
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -53,6 +53,7 @@ export default function ScreenKeo({ navigation }) {
                   productImage: item.image,
                   productPrice: item.price,
                   account: account,
+                  dataUser: dataUser,
                 })
               }
             >

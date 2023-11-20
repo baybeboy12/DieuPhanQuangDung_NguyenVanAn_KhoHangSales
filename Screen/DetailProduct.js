@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 
 export default function DetailProduct({ navigation }) {
@@ -8,7 +8,19 @@ export default function DetailProduct({ navigation }) {
   var route = useRoute();
   var [account, setAccount] = useState(route.params.account);
   var [carts, setCarts] = useState([]);
-
+  var [dataUser, setDataUser] = useState(route.params.dataUser);
+  useEffect(() => {
+    if (route.params?.itemDeleted) {
+      fetch(`https://6540984045bedb25bfc22306.mockapi.io/account/${account.id}`)
+        .then((response) => response.json())
+        .then((updatedAccount) => {
+          setAccount(updatedAccount);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi lấy giỏ hàng từ API:", error);
+        });
+    }
+  }, [route.params?.itemDeleted]);
   const increaseQuantity = () => {
     setSoLuong(soLuong + 1);
   };
@@ -53,6 +65,7 @@ export default function DetailProduct({ navigation }) {
 
     navigation.navigate("Carts", {
       account: account,
+      dataUser: dataUser,
     });
   };
 

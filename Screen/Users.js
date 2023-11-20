@@ -6,7 +6,17 @@ import { useRoute } from "@react-navigation/native";
 export default function User({ navigation }) {
   var route = useRoute();
   var [account, setAccount] = useState(route.params.account);
-
+  const [dataUser, setDataUser] = useState(route.params.dataUser);
+  const handleLogout = () => {
+    // Tạo bản sao của đối tượng account
+    const updatedAccount = { ...account, carts: [] };
+    // Cập nhật trạng thái với bản sao mới
+    setAccount(updatedAccount);
+    // Tiếp tục xử lý đăng xuất
+    navigation.navigate("SignIn", { dataUser: dataUser, account: account });
+  };
+  // console.log(account);
+  // console.log(dataUser);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -66,7 +76,7 @@ export default function User({ navigation }) {
       </View>
 
       <View style={styles.footer}>
-        <Pressable style={styles.logoutButton}>
+        <Pressable style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutText}>Log Out</Text>
         </Pressable>
       </View>

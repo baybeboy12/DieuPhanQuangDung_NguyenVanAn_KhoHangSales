@@ -1,1 +1,1 @@
-dsafasdfasdfsadfasdfasdf
+npm install @react-navigation/native-stack

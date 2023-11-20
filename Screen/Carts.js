@@ -14,7 +14,7 @@ export default function Carts({ navigation }) {
   var route = useRoute();
   var [account, setAccount] = useState(route.params.account);
   var [total, setTotal] = useState(0);
-
+  var [dataUser, setDataUser] = useState(route.params.dataUser);
   useEffect(() => {
     if (route.params?.account) {
       setAccount(route.params.account);
@@ -38,6 +38,9 @@ export default function Carts({ navigation }) {
       username: account.username,
       password: account.password,
       carts: [],
+      address: account.address,
+      phone: account.phone,
+      fullName: account.fullName,
     };
     fetch(
       `https://6540984045bedb25bfc22306.mockapi.io/account/${newAccount.id}`,
@@ -56,25 +59,37 @@ export default function Carts({ navigation }) {
 
     navigation.navigate("Home", {
       account: newAccount,
+      dataUser: dataUser,
     });
   };
 
   const handleDeleteItem = (item) => {
-    console.log(item);
     const updatedCarts = account.carts.filter(
       (product) => product.name !== item.name
     );
 
+    // Tạo một bản sao tạm thời của account với giỏ hàng mới
+    const tempAccount = { ...account, carts: updatedCarts };
+
+    // Gửi request cập nhật giỏ hàng lên API
     fetch(`https://6540984045bedb25bfc22306.mockapi.io/account/${account.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...account, carts: updatedCarts }),
+      body: JSON.stringify(tempAccount),
     })
       .then((response) => response.json())
-      .then((updatedAccount) => {
-        setAccount(updatedAccount);
+      .then(() => {
+        // Cập nhật state account với giá trị mới từ bản sao tạm thời
+        setAccount(tempAccount);
+
+        // Thông báo cho màn hình DetailProduct về sự thay đổi
+        navigation.navigate("Home", {
+          account: tempAccount,
+          itemDeleted: true,
+          dataUser: dataUser,
+        });
       })
       .catch((error) => {
         console.error("Lỗi khi cập nhật giỏ hàng trên API:", error);
@@ -117,7 +132,12 @@ export default function Carts({ navigation }) {
       <View style={styles.bottomContainer}>
         <Pressable
           style={styles.viewHome}
-          onPress={() => navigation.navigate("Home", { account })}
+          onPress={() =>
+            navigation.navigate("Home", {
+              account: account,
+              dataUser: dataUser,
+            })
+          }
         >
           <Text style={{ fontSize: 18, fontWeight: "bold", color: "black" }}>
             Home
