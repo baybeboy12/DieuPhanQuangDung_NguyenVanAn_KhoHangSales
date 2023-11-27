@@ -42,7 +42,7 @@ export default function SignUp({ navigation }) {
   useEffect(() => {
     if (dataUpdated) {
       // Nếu dữ liệu đã được cập nhật, chuyển hướng đến màn hình đăng nhập
-      navigation.navigate("SignIn", { username, password });
+      navigation.navigate("SignIn", { username, password, address, phone, fullName });
     }
   }, [dataUpdated]);
 
