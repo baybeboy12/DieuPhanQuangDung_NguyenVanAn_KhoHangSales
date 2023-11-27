@@ -15,28 +15,50 @@ import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
 export default function SignUp({ navigation }) {
+  var [dataUser, setDataUser] = useState([]);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [fullName, setFullName] = useState("");
-  const [dataUpdated, setDataUpdated] = useState();
+  const [dataUpdated, setDataUpdated] = useState("");
+
+  useEffect(() => {
+    fetch("https://6540984045bedb25bfc22306.mockapi.io/account")
+      .then((response) => response.json())
+      .then((json) => {
+        dataUser = json;
+        setDataUser(json);
+      });
+  }, []);
 
   const handleSignUp = () => {
+    const newUser = {
+      username: username,
+      password: password,
+      address: address,
+      phone: phone,
+      fullName: fullName,
+    };
+  
     fetch("https://6540984045bedb25bfc22306.mockapi.io/account", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password, address, phone, fullName }),
+      body: JSON.stringify(newUser),
     })
       .then((response) => response.json())
-      .then(() => {
-        setDataUpdated(true);
+      .then((updateData) => {
+        setDataUser([...dataUser,updateData])
+        // console.log(dataUser)
+        navigation.navigate("SignIn", { dataUser });
+        alert("Sign up successful")
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+
   };
 
   useEffect(() => {

@@ -42,11 +42,11 @@ export default function SignIn({ navigation }) {
   }, [route.params]);
 
   useEffect(() => {
-    if (route.params?.username && route.params?.password) {
-      setDataUser([...dataUser, route.params.username],[...dataUser, route.params.password]);
+    if (route.params?.dataUser) {
+      setDataUser(route.params.dataUser);
+      // console.log(dataUser)
     }
-  }, [route.params?.username],[route.params?.password]);
-
+  }, [route.params?.dataUser]);
 
   const handleSignIn = () => {
     const account = dataUser.find(
