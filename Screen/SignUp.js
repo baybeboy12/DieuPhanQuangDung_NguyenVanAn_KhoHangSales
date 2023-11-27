@@ -20,7 +20,7 @@ export default function SignUp({ navigation }) {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [fullName, setFullName] = useState("");
-  const [dataUpdated, setDataUpdated] = useState(false);
+  const [dataUpdated, setDataUpdated] = useState();
 
   const handleSignUp = () => {
     fetch("https://6540984045bedb25bfc22306.mockapi.io/account", {
